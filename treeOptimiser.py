@@ -29,6 +29,12 @@ def greedyChooseBestQuery(nodes, usedQueries):
     
     return bestQuery
 
+parents = []
+children = []
+weights = []
+
+nextid = 1
+
 class TreeNode:
     def __init__(self, leaves = None, parent=None):
         self.leaves = leaves
@@ -36,6 +42,7 @@ class TreeNode:
         self.leftChild = None
         self.parent = parent
         self.query = None
+        self.id = -1
     
     def greedyConstruct(self, usedQueries):
         qidx = greedyChooseBestQuery(self.leaves, usedQueries)
@@ -63,17 +70,40 @@ class TreeNode:
             self.rightChild.greedyConstruct(uq)
 
     def __str__(self) -> str:
-        s = ""
-        s += f"query: {self.query[0]} == {self.query[1]}\n"
-        s+="false: {\n"
-        s+=str(self.leftChild)
-        s+="\n}\ntrue: {\n"
-        s+=str(self.rightChild)
-        s+="\n}\n"
+        return f"{self.id}:{self.query[0]}=={self.query[1]}"
 
-        return s
+    def addToLists(self):
+        # Give ids to children
+        # If left not string
+        global nextid
+        if type(self.leftChild) != type(""):
+            self.leftChild.id = nextid
+            nextid += 1
+            self.leftChild.addToLists()
+        if type(self.rightChild) != type(""):
+            self.rightChild.id = nextid
+            nextid += 1
+            self.rightChild.addToLists()
+
+        if self.leftChild != None:
+            parents.append(str(self))
+            children.append(str(self.leftChild))
+            weights.append(0)
+        if self.rightChild != None:
+            parents.append(str(self))
+            children.append(str(self.rightChild))
+            weights.append(1)     
+
+
+
         
 root = TreeNode(leaves=data)
 root.greedyConstruct([0 for _ in queries])
 
-print(root)
+root.id = 0
+
+root.addToLists()
+
+print(parents)
+print(children)
+print(weights)
