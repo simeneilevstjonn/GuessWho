@@ -119,7 +119,7 @@ def interactive():
             if raw.lower() in ["false","f","n","no"]:
                 ans = False
             elif raw.lower() in ["true","t","y","yes"]:
-                ans = False
+                ans = True
         
         active = active.rightChild if ans else active.leftChild
     
