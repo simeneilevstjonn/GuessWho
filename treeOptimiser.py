@@ -7,7 +7,8 @@ queries = set()
 for name, col in data.iteritems():
     if name != "name":
         for val in col.values:
-            queries.add((name, val))
+            if val != False:
+                queries.add((name, val))
 
 # Make list for easier indexing
 queries = list(queries)
