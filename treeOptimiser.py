@@ -104,6 +104,25 @@ root.id = 0
 
 root.addToLists()
 
-print(parents)
-print(children)
-print(weights)
+if False:
+    print(parents)
+    print(children)
+    print(weights)
+
+def interactive():
+    active = root
+    while type(active) != type(""):
+        print(f"{active.query[0]}=={active.query[1]} y/n?")
+        ans = None
+        while ans == None:
+            raw = input()
+            if raw.lower() in ["false","f","n","no"]:
+                ans = False
+            elif raw.lower() in ["true","t","y","yes"]:
+                ans = False
+        
+        active = active.rightChild if ans else active.leftChild
+    
+    print(active)
+
+interactive()
